@@ -49,7 +49,12 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+#ifdef __GNUC__
+    // when small printf set to 'yes' calls __io_putchar(int ch)
+    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,16 +62,18 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+uint16_t ADC1Buffer[2048];
+uint16_t ADC2Buffer[2048];
 
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 /* USER CODE END 0 */
 
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -94,12 +101,34 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
+  // -- Enables ADC and starts conversion of the regular channels.
+  if( HAL_ADC_Start(&hadc1) != HAL_OK)
+	  return 0;
+  if( HAL_ADC_Start(&hadc2) != HAL_OK)
+	  return 0;
+  // -- Enables ADC DMA request
+  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, 2048) != HAL_OK)
+	  return 0;
+  if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC1Buffer, 2048) != HAL_OK)
+	  return 0;
+
+  HAL_TIM_Base_Start(&htim6);
+  HAL_DAC_Start(&hdac,DAC_CHANNEL_1);
+  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
+
+  //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  printf("Test ... \r\n");
+	  // alternative
+	  sprintf(send, "Hallo ...\r\n");
+	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
+	  HAL_UART_Transmit(*huart1,(uint8_t*)"\r\n",2,1000);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -146,7 +175,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+PUTCHAR_PROTOTYPE
+{
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+    return ch;
+}
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_UART_Receive_IT(&huart1, (uint8_t *)&uart_recv, 1);
+	HAL_UART_Transmit(&huart1, (uint8_t *)&uart_recv, 1, 10000);
+}
 /* USER CODE END 4 */
 
 #ifdef USE_FULL_ASSERT
