@@ -40,6 +40,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "RadarControl.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -55,6 +56,7 @@
 #else
     #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif
+//#define ARM_MATH_CM4 ? use fpu?
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,7 +66,7 @@ void SystemClock_Config(void);
 /* Private function prototypes -----------------------------------------------*/
 uint16_t ADC1Buffer[2048];
 uint16_t ADC2Buffer[2048];
-
+//RadarControl RadarCtl;
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -126,9 +128,9 @@ int main(void)
   {
 	  printf("Test ... \r\n");
 	  // alternative
-	  sprintf(send, "Hallo ...\r\n");
-	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
-	  HAL_UART_Transmit(*huart1,(uint8_t*)"\r\n",2,1000);
+//	  sprintf(send, "Hallo ...\r\n");
+//	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
+//	  HAL_UART_Transmit(*huart1,(uint8_t*)"\r\n",2,1000);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -183,8 +185,9 @@ PUTCHAR_PROTOTYPE
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_UART_Receive_IT(&huart1, (uint8_t *)&uart_recv, 1);
-	HAL_UART_Transmit(&huart1, (uint8_t *)&uart_recv, 1, 10000);
+	uint8_t* uart_rx_byte;
+	HAL_UART_Receive_IT(&huart1, uart_rx_byte, 1);
+	HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
 }
 /* USER CODE END 4 */
 
