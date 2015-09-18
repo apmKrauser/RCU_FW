@@ -8,9 +8,15 @@
 #ifndef RADARCONTROL_H_
 #define RADARCONTROL_H_
 
-class RadarControl {
-public:
-	RadarControl();
-};
+#include "stm32f4xx_hal.h"
+#include "stm32_hal_legacy.h"
+#include "dac.h"
+#include "tim.h"
+
+void setFilterBaseFreq (uint32_t freq);
+
+void setVCOFreq(uint32_t freq);
+
+void setVCOOffset(uint32_t freq);
 
 #endif /* RADARCONTROL_H_ */

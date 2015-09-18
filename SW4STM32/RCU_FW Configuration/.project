@@ -31,9 +31,9 @@
 			<locationURI>PARENT-2-PROJECT_LOC/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f407xx.s</locationURI>
 		</link>
 		<link>
-			<name>Application/User/RadarControl.cpp</name>
+			<name>Application/User/RadarControl.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/RadarControl.cpp</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/RadarControl.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/RadarControl.h</name>

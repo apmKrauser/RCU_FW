@@ -41,6 +41,7 @@
 #include "usart.h"
 #include "gpio.h"
 #include "RadarControl.h"
+#include "stm32_hal_legacy.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -117,7 +118,8 @@ int main(void)
   HAL_TIM_Base_Start(&htim6);
   HAL_DAC_Start(&hdac,DAC_CHANNEL_1);
   HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
-
+  __HAL_TIM_SetCompare(&hdac, DAC_CHANNEL_1,0);
+  setFilterBaseFreq(2048);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
   /* USER CODE END 2 */
