@@ -75,3 +75,4 @@ $RECYCLE.BIN/
 *.lnk
 *.lock
 .Metadata
+SW4STM32/RCU_FW Configuration/.settings/language.settings.xml
