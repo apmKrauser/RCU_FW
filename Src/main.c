@@ -117,9 +117,8 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim6);
   HAL_DAC_Start(&hdac,DAC_CHANNEL_1);
-  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
-  __HAL_TIM_SetCompare(&hdac, DAC_CHANNEL_1,0);
-  setFilterBaseFreq(2048);
+  HAL_DAC_Start(&hdac,DAC_CHANNEL_2);
+ // HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
   /* USER CODE END 2 */
@@ -129,6 +128,12 @@ int main(void)
   while (1)
   {
 	  printf("Test ... \r\n");
+	  setVCOFreq(10000);
+	  setFilterBaseFreq(0);
+	  HAL_Delay(5000);
+	  printf("Besonderer Test ... \r\n");
+	  setVCOFreq(30000);
+	  setFilterBaseFreq(2048);
 	  // alternative
 //	  sprintf(send, "Hallo ...\r\n");
 //	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
