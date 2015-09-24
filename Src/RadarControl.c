@@ -19,8 +19,11 @@ void setVCOFreq(uint32_t freq)
 	//int	fdfds &hdac;
 	//__HAL_TIM_SetAutoreload(&hdac, 0);
 	//__HAL_TIM_SET_AUTORELOAD(&hdac, 0);
-	  htim6.Init.Period = freq;
-	  HAL_TIM_Base_Init(&htim6);
+	//HAL_TIM_Base_Stop(&htim6);
+	//HAL_TIM_Base_DeInit(&htim6);
+	htim6.Init.Period = freq;
+	HAL_TIM_Base_Init(&htim6);
+	//HAL_TIM_Base_Start(&htim6);
 
 }
 

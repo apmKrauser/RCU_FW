@@ -121,6 +121,8 @@ int main(void)
  // HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
+  printf("Hello world ... \r\n");
+  HAL_Delay(20000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -134,6 +136,7 @@ int main(void)
 	  printf("Besonderer Test ... \r\n");
 	  setVCOFreq(30000);
 	  setFilterBaseFreq(2048);
+	  HAL_Delay(5000);
 	  // alternative
 //	  sprintf(send, "Hallo ...\r\n");
 //	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
@@ -194,7 +197,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	uint8_t* uart_rx_byte;
 	HAL_UART_Receive_IT(&huart1, uart_rx_byte, 1);
-	HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
+	//HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
 }
 /* USER CODE END 4 */
 
