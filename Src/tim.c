@@ -96,6 +96,7 @@ void MX_TIM6_Init(void)
   htim6.Instance = TIM6;
   htim6.Init.Prescaler = 1;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.ClockDivision = TIM_CLOCKDIVISION_DIV2;  // wurde vergessen???
   htim6.Init.Period = 32768;
   HAL_TIM_Base_Init(&htim6);
 

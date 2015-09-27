@@ -42,6 +42,8 @@
 #include "gpio.h"
 #include "RadarControl.h"
 #include "stm32_hal_legacy.h"
+// #include <stdio.h>
+
 
 /* USER CODE BEGIN Includes */
 
@@ -65,13 +67,15 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+//volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
 uint16_t ADC1Buffer[2048];
 uint16_t ADC2Buffer[2048];
+
 //RadarControl RadarCtl;
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 /* USER CODE END 0 */
 
@@ -121,8 +125,10 @@ int main(void)
  // HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
+  HAL_Delay(5000);
+  HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
   printf("Hello world ... \r\n");
-  HAL_Delay(20000);
+  HAL_Delay(1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,17 +136,20 @@ int main(void)
   while (1)
   {
 	  printf("Test ... \r\n");
-	  setVCOFreq(10000);
-	  setFilterBaseFreq(0);
-	  HAL_Delay(5000);
-	  printf("Besonderer Test ... \r\n");
-	  setVCOFreq(30000);
+	  setVCOFreq(1600);
 	  setFilterBaseFreq(2048);
+	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	  HAL_Delay(5000);
-	  // alternative
-//	  sprintf(send, "Hallo ...\r\n");
-//	  HAL_UART_Transmit(*huart1,(uint8_t*)send,20,1000);
-//	  HAL_UART_Transmit(*huart1,(uint8_t*)"\r\n",2,1000);
+
+	  printf("Besonderer Test ... \r\n");
+
+	  setFilterBaseFreq(0);
+	  setVCOFreq(2400);
+
+	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048);
+	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
+	  HAL_Delay(5000);
+
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -187,18 +196,33 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-PUTCHAR_PROTOTYPE
+//PUTCHAR_PROTOTYPE
+//{
+//   /// HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+////    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 10000);
+////    return ch;
+//    return (ITM_SendChar(ch));
+//}
+
+int _write( int file, char *ptr, int len )
 {
-    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
-    return ch;
+  int txCount;
+  (void)file;
+  for ( txCount = 0; txCount < len; txCount++)
+  {
+	  ITM_SendChar(ptr[txCount]);
+	  //HAL_UART_Transmit(&huart1, (uint8_t*)&ptr[txCount], 1, 10000);
+  }
+  return len;
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	uint8_t* uart_rx_byte;
-	HAL_UART_Receive_IT(&huart1, uart_rx_byte, 1);
-	//HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
-}
+
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//	uint8_t* uart_rx_byte;
+//	HAL_UART_Receive_IT(&huart1, uart_rx_byte, 1);
+//	HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
+//}
 /* USER CODE END 4 */
 
 #ifdef USE_FULL_ASSERT
