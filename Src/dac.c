@@ -63,7 +63,7 @@ void MX_DAC_Init(void)
 
     /**Configure Triangle wave generation on DAC OUT1 
     */
-  HAL_DACEx_TriangleWaveGenerate(&hdac, DAC_CHANNEL_1, DAC_TRIANGLEAMPLITUDE_127);
+  HAL_DACEx_TriangleWaveGenerate(&hdac, DAC_CHANNEL_1, DAC_TRIANGLEAMPLITUDE_2047);
 
     /**DAC channel OUT2 config 
     */

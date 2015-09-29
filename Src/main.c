@@ -136,19 +136,19 @@ int main(void)
   while (1)
   {
 	  printf("Test ... \r\n");
-	  setVCOFreq(1600);
+	  setVCOFreq(3200);
 	  setFilterBaseFreq(2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
-	  HAL_Delay(5000);
+	  HAL_Delay(10000);
 
 	  printf("Besonderer Test ... \r\n");
 
 	  setFilterBaseFreq(0);
-	  setVCOFreq(2400);
+	  setVCOFreq(2000);
 
 	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
-	  HAL_Delay(5000);
+	  HAL_Delay(10000);
 
   /* USER CODE END WHILE */
 
