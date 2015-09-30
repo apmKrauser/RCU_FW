@@ -15,7 +15,7 @@
 
 void setFilterBaseFreq (uint32_t freq);
 
-void setVCOFreq(uint32_t freq);
+uint32_t setVCOFreq(uint32_t freq);
 
 void setVCOOffset(uint32_t freq);
 

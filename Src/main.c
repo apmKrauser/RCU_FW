@@ -42,6 +42,7 @@
 #include "gpio.h"
 #include "RadarControl.h"
 #include "stm32_hal_legacy.h"
+#include "config.h"
 // #include <stdio.h>
 
 
@@ -82,7 +83,7 @@ uint16_t ADC2Buffer[2048];
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint32_t ret;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -136,7 +137,8 @@ int main(void)
   while (1)
   {
 	  printf("Test ... \r\n");
-	  setVCOFreq(3200);
+	  ret = setVCOFreq(3200);
+	  setVCOOffset(128);
 	  setFilterBaseFreq(2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	  HAL_Delay(10000);
@@ -145,8 +147,6 @@ int main(void)
 
 	  setFilterBaseFreq(0);
 	  setVCOFreq(2000);
-
-	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
 	  HAL_Delay(10000);
 
