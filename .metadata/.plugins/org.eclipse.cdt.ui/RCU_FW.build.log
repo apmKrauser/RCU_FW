@@ -1,0 +1,6 @@
+00:02:50 **** Incremental Build of configuration Debug for project RCU_FW ****
+make all 
+make: Nothing to be done for `all'.
+
+00:02:50 Build Finished (took 578ms)
+
