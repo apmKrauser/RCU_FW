@@ -1,6 +1,7 @@
-00:02:50 **** Incremental Build of configuration Debug for project RCU_FW ****
-make all 
-make: Nothing to be done for `all'.
+19:26:55 **** Clean-only build of configuration Debug for project RCU_FW ****
+make clean 
+rm -rf *
+' '
 
-00:02:50 Build Finished (took 578ms)
+19:26:58 Build Finished (took 3s.409ms)
 

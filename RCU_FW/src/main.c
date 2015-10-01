@@ -119,7 +119,9 @@ int main(void)
 	  return 0;
   if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC1Buffer, 2048) != HAL_OK)
 	  return 0;
-
+  //HAL_DMAEx_MultiBufferStart(&hdma_adc3, hadc1.Instance->DR, (uint32_t) Buffer1, (uint32_t) Buffer2, 10);
+//  ADC_RegularChannelConfig(ADC1,ADC_Channel_12,2,ADC_SampleTime_480Cycles);
+//  ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);
   HAL_TIM_Base_Start(&htim6);
   HAL_DAC_Start(&hdac,DAC_CHANNEL_1);
   HAL_DAC_Start(&hdac,DAC_CHANNEL_2);
@@ -136,9 +138,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  //TIM Update Frequency = TIM Clock / (P * Q)
+	  //Prescaler = P - 1, Period = Q - 1
+
 	  printf("Test ... \r\n");
-	  ret = setVCOFreq(3200);
-	  setVCOOffset(128);
+	  ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
+	  setVCOOffset(128);    // check sConfig.SamplingTime
 	  setFilterBaseFreq(2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	  HAL_Delay(10000);

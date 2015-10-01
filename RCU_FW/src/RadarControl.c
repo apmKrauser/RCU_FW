@@ -19,15 +19,20 @@ void setFilterBaseFreq (uint32_t freq)
 uint32_t setVCOFreq(uint32_t freq)
 {
 	uint32_t vcofreq;
+	uint32_t periodFkt;
+	uint32_t period;
 	//int	fdfds &hdac;
 	//__HAL_TIM_SetAutoreload(&hdac, 0);
 	//__HAL_TIM_SET_AUTORELOAD(&hdac, 0);
 	//HAL_TIM_Base_Stop(&htim6);
 	//HAL_TIM_Base_DeInit(&htim6);
 	// 168M/2/2048/period=freq
-	htim6.Init.Period = (uint32_t)((168000000/2/2/2048) / freq);
+	periodFkt = (uint32_t)(168000000/2/2/2048);
+	period = (uint32_t)(periodFkt / freq) - 1;
+	if (period < 0) period = 0;
+	htim6.Init.Period = period;  // period-1?
 	HAL_TIM_Base_Init(&htim6);
-	vcofreq = htim6.Init.Period*(168000000/2/2/2048);
+	vcofreq = periodFkt * (htim6.Init.Period + 1);
 #ifdef VERBOSE_DEBUG
 	printf("f_VCO set to %u", (unsigned int)vcofreq);
 #endif
