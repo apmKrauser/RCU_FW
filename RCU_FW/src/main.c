@@ -117,7 +117,7 @@ int main(void)
   // -- Enables ADC DMA request
   if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, 2048) != HAL_OK)
 	  return 0;
-  if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC1Buffer, 2048) != HAL_OK)
+  if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2Buffer, 2048) != HAL_OK)
 	  return 0;
   //HAL_DMAEx_MultiBufferStart(&hdma_adc3, hadc1.Instance->DR, (uint32_t) Buffer1, (uint32_t) Buffer2, 10);
 //  ADC_RegularChannelConfig(ADC1,ADC_Channel_12,2,ADC_SampleTime_480Cycles);
@@ -128,8 +128,8 @@ int main(void)
  // HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
-  HAL_Delay(5000);
-  HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
+  HAL_Delay(2000);
+  //HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
   printf("Hello world ... \r\n");
   HAL_Delay(1000);
   /* USER CODE END 2 */

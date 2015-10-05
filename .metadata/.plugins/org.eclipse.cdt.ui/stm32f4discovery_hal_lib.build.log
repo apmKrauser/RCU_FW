@@ -1,7 +1,6 @@
-19:26:47 **** Clean-only build of configuration Debug for project stm32f4discovery_hal_lib ****
-make clean 
-rm -rf *
-' '
+22:15:45 **** Incremental Build of configuration Debug for project stm32f4discovery_hal_lib ****
+make all 
+make: Nothing to be done for `all'.
 
-19:26:55 Build Finished (took 7s.151ms)
+22:15:46 Build Finished (took 1s.353ms)
 
