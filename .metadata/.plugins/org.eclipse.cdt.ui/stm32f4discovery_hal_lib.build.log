@@ -1,6 +1,0 @@
-22:15:45 **** Incremental Build of configuration Debug for project stm32f4discovery_hal_lib ****
-make all 
-make: Nothing to be done for `all'.
-
-22:15:46 Build Finished (took 1s.353ms)
-
