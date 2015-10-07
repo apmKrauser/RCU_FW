@@ -71,6 +71,7 @@ void SystemClock_Config(void);
 //volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
 uint16_t ADC1Buffer[2048];
 uint16_t ADC2Buffer[2048];
+char USART_Buffer[100] = "Test 0 Text\r\n";
 
 //RadarControl RadarCtl;
 /* USER CODE END PFP */
@@ -128,10 +129,13 @@ int main(void)
  // HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
 
-  HAL_Delay(2000);
+
+  HAL_Delay(5000);
   //HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
   printf("Hello world ... \r\n");
   HAL_Delay(1000);
+
+  HAL_UART_Transmit_DMA(&huart1, (uint8_t*)&USART_Buffer, 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -147,14 +151,31 @@ int main(void)
 	  setVCOOffset(128);    // check sConfig.SamplingTime
 	  setFilterBaseFreq(2048);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
-	  HAL_Delay(10000);
+	  HAL_Delay(5000);
+
+	  USART_Buffer[5]++;
+	  switch(HAL_UART_DMAResume(&huart1))
+	  {
+	  case HAL_OK:
+		  printf("HAL_OK\r\n");
+		  break;
+	  case HAL_BUSY:
+		  printf("HAL_BUSY\r\n");
+		  break;
+	  default:
+		  printf("HAL_Mist\r\n");
+		 break;
+	  }
+	 // HAL_UART_Transmit(&huart1, (uint8_t *)&USART_Buffer, 100, 10000);
+	  // in isr
+	  // HAL_UART_DMAResume, HAL_UART_DMAPause ?
 
 	  printf("Besonderer Test ... \r\n");
 
 	  setFilterBaseFreq(0);
 	  setVCOFreq(2000);
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
-	  HAL_Delay(10000);
+	  HAL_Delay(5000);
 
   /* USER CODE END WHILE */
 
@@ -205,7 +226,7 @@ void SystemClock_Config(void)
 PUTCHAR_PROTOTYPE
 {
    /// HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
-//    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 10000);
+   // HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 10000);
 //    return ch;
     return (ITM_SendChar(ch));
 }
