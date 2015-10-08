@@ -5,10 +5,36 @@
  *      Author: SpecialK
  */
 
+#include <stdbool.h>
 #include "RadarControl.h"
+#include "stm32f4xx_hal.h"
 #include "config.h"
+#include "usart.h"
 
+// local variables
+bool IsBusy_UART_DMA = false;
 
+// wait for last send buffer over uart request to complete
+void waitSendBufferUart()
+{
+	// loop until dma irq called
+	while (IsBusy_UART_DMA);
+}
+
+// send buffer over uart non blocking using dma
+void sendBufferUart(uint8_t *pData, uint16_t Size)
+{
+	IsBusy_UART_DMA = true;
+	HAL_UART_Transmit_DMA(&huart1, pData, Size);
+	//HAL_UART_DMAResume(&huart1);
+}
+
+void UART_DMA_Done_IRQHandler()
+{
+	HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
+	HAL_UART_DMAPause(&huart1);
+	IsBusy_UART_DMA = false;
+}
 
 void setFilterBaseFreq (uint32_t freq)
 {

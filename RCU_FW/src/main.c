@@ -31,7 +31,10 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "stm32f4xx_hal.h"
+#include "systemclock.h"
+#include "RadarControl.h"
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
@@ -40,7 +43,6 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "RadarControl.h"
 #include "stm32_hal_legacy.h"
 #include "config.h"
 // #include <stdio.h>
@@ -71,7 +73,7 @@ void SystemClock_Config(void);
 //volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
 uint16_t ADC1Buffer[2048];
 uint16_t ADC2Buffer[2048];
-char USART_Buffer[100] = "Test 0 Text\r\n";
+char UART_Buffer[100] = "Test 0 Text\r\n";
 
 //RadarControl RadarCtl;
 /* USER CODE END PFP */
@@ -135,7 +137,6 @@ int main(void)
   printf("Hello world ... \r\n");
   HAL_Delay(1000);
 
-  HAL_UART_Transmit_DMA(&huart1, (uint8_t*)&USART_Buffer, 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -153,18 +154,9 @@ int main(void)
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	  HAL_Delay(5000);
 
-	  USART_Buffer[5]++;
-	  switch(HAL_UART_DMAResume(&huart1))
-	  {
-	  case HAL_OK:
-		  printf("HAL_OK\r\n");
-		  break;
-	  case HAL_BUSY:
-		  printf("HAL_BUSY\r\n");
-		  break;
-	  default:
-		  printf("HAL_Mist\r\n");
-		 break;
+	  UART_Buffer[5]++;
+	  sendBufferUart(UART_Buffer, 100);
+	  //waitSendBufferUart()
 	  }
 	 // HAL_UART_Transmit(&huart1, (uint8_t *)&USART_Buffer, 100, 10000);
 	  // in isr
@@ -186,41 +178,7 @@ int main(void)
 
 }
 
-/** System Clock Configuration
-*/
-void SystemClock_Config(void)
-{
 
-  RCC_OscInitTypeDef RCC_OscInitStruct;
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-
-  __PWR_CLK_ENABLE();
-
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 8;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
-
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1
-                              |RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
-
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
-
-  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
-
-}
 
 /* USER CODE BEGIN 4 */
 PUTCHAR_PROTOTYPE

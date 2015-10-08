@@ -34,6 +34,8 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
+#include "RadarControl.h"
+
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
@@ -121,8 +123,7 @@ void DMA2_Stream2_IRQHandler(void)
 void DMA2_Stream7_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream7_IRQn 0 */
-	HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
-	HAL_UART_DMAPause(&huart1);
+	UART_DMA_Done_IRQHandler();
   /* USER CODE END DMA2_Stream7_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_usart1_tx);
   /* USER CODE BEGIN DMA2_Stream7_IRQn 1 */
