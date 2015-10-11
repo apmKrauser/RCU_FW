@@ -19,6 +19,10 @@ enum {
 	CMD_GetADC2Buffer   = 0x02
 };
 
+uint8_t uart_rx_byte;
+
+
+
 void setFilterBaseFreq (uint32_t freq);
 
 uint32_t setVCOFreq(uint32_t freq);
@@ -30,5 +34,7 @@ void waitSendBufferUart();
 void sendBufferUart(uint8_t *pData, uint16_t Size);
 
 void UART_DMA_Done_IRQHandler();
+
+void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart);
 
 #endif /* RADARCONTROL_H_ */

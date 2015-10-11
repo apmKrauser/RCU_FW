@@ -13,6 +13,8 @@
 
 // local variables
 bool IsBusy_UART_DMA = false;
+// todo: remove
+char UART_Buffer2[100] = "Sende ADC Puffer\r\n";
 
 // wait for last send buffer over uart request to complete
 void waitSendBufferUart()
@@ -25,15 +27,29 @@ void waitSendBufferUart()
 void sendBufferUart(uint8_t *pData, uint16_t Size)
 {
 	IsBusy_UART_DMA = true;
-	HAL_UART_Transmit_DMA(&huart1, pData, Size);
-	//HAL_UART_DMAResume(&huart1);
+	// todo: remove
+	HAL_UART_Transmit_DMA(&huart3, pData, Size);
+	HAL_UART_DMAResume(&huart3);
+//	HAL_UART_Transmit_DMA(&huart1, pData, Size);
+//	HAL_UART_DMAResume(&huart1);
 }
 
 void UART_DMA_Done_IRQHandler()
 {
-	HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
-	HAL_UART_DMAPause(&huart1);
+	// todo: remove
+	HAL_UART_DMAPause(&huart3);
+	//HAL_UART_DMAPause(&huart1);
 	IsBusy_UART_DMA = false;
+}
+
+void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
+{
+	if ((char)uart_rx_byte == '1')
+		sendBufferUart((uint8_t *)&UART_Buffer2, 100);
+	//HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
+	// todo: remove
+	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+	//__HAL_UART_FLUSH_DRREGISTER()
 }
 
 void setFilterBaseFreq (uint32_t freq)

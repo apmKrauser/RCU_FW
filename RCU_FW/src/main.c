@@ -73,13 +73,14 @@ void SystemClock_Config(void);
 //volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
 uint16_t ADC1Buffer[2048];
 uint16_t ADC2Buffer[2048];
+
 char UART_Buffer[100] = "Test 0 Text\r\n";
 
 //RadarControl RadarCtl;
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+
 
 /* USER CODE END 0 */
 
@@ -109,6 +110,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM6_Init();
   MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
 
@@ -136,7 +138,11 @@ int main(void)
   //HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
   printf("Hello world ... \r\n");
   HAL_Delay(1000);
-
+  // Trigger receivement of uart bytes
+ // HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
+  // todo: remove
+  HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+  //sendBufferUart((uint8_t *)&UART_Buffer, 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,13 +160,10 @@ int main(void)
 	  HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	  HAL_Delay(5000);
 
-	  UART_Buffer[5]++;
-	  sendBufferUart(UART_Buffer, 100);
+//	  UART_Buffer[5]++;
+//	  sendBufferUart(&UART_Buffer, 100);
 	  //waitSendBufferUart()
-	  }
-	 // HAL_UART_Transmit(&huart1, (uint8_t *)&USART_Buffer, 100, 10000);
-	  // in isr
-	  // HAL_UART_DMAResume, HAL_UART_DMAPause ?
+
 
 	  printf("Besonderer Test ... \r\n");
 
@@ -183,9 +186,6 @@ int main(void)
 /* USER CODE BEGIN 4 */
 PUTCHAR_PROTOTYPE
 {
-   /// HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
-   // HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 10000);
-//    return ch;
     return (ITM_SendChar(ch));
 }
 
@@ -202,12 +202,7 @@ PUTCHAR_PROTOTYPE
 //}
 
 
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//	uint8_t* uart_rx_byte;
-//	HAL_UART_Receive_IT(&huart1, uart_rx_byte, 1);
-//	HAL_UART_Transmit(&huart1, uart_rx_byte, 1, 10000);
-//}
+
 /* USER CODE END 4 */
 
 #ifdef USE_FULL_ASSERT
