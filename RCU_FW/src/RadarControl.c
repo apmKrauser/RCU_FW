@@ -6,21 +6,85 @@
  */
 
 #include <stdbool.h>
-#include "RadarControl.h"
 #include "stm32f4xx_hal.h"
+#include "RadarControl.h"
 #include "config.h"
 #include "usart.h"
+#include "commands.h"
+#include "adc.h"
+#include "dac.h"
+#include "tim.h"
 
-// local variables
-bool IsBusy_UART_DMA = false;
-// todo: remove
-char UART_Buffer2[100] = "Sende ADC Puffer\r\n";
+// variables
+#define UART_RXBUFFER_SIZE 100
+
+volatile bool IsBusy_UART_DMA = false;
+volatile bool IsBusy_ADC1 = false;
+volatile bool IsBusy_ADC2 = false;
+volatile uint8_t uart_rx_byte;
+
+volatile uint8_t UART_RXBuffer[UART_RXBUFFER_SIZE];
+volatile uint16_t UART_RXBufferBytes = 0;
+
+volatile uint16_t RxStreamBufferBytes = 0;
+
+uint16_t ADC1Buffer[ADC_BUFFER_SIZE] = {0};
+uint16_t ADC2Buffer[ADC_BUFFER_SIZE] = {0};
+
+RxMode_t RxMode = RxMode_GetCommands;
+Command_Struct CurrentCommand = CommandNOOP_init;
+
+
+
+bool checkAndProcessCommand()
+{
+	if (RxMode != RxMode_GetCommands) return false;
+	if (cmdCheckRxBuffer(&CurrentCommand, (uint8_t*) &UART_RXBuffer, RxStreamBufferBytes))
+	{
+		  RxStreamBufferBytes = 0;
+		  processCommand(CurrentCommand);
+		  return true;
+	} else return false;
+}
+
+void processCommand(Command_Struct cmd)
+{
+	switch (cmd.command)
+	{
+		case CMD_NOOP:
+			break;
+		case CMD_GetADC1Buffer:
+			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE);
+			break;
+		case CMD_GetADC2Buffer:
+			break;
+		case CMD_GetAndSendADC1:
+			startDAQ();
+			awaitDAQComplete();
+			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE);
+			break;
+		case CMD_GetAndSendADC2:
+			break;
+		case CMD_StreamToBuffer:
+			RxMode = RxMode_RxStream;
+			sendOk(true);
+			break;
+	}
+	CurrentCommand = CommandNOOP;
+}
+
 
 // wait for last send buffer over uart request to complete
-void waitSendBufferUart()
+void awaitSendBufferUart()
 {
 	// loop until dma irq called
 	while (IsBusy_UART_DMA);
+}
+
+void awaitDAQComplete()
+{
+	while (IsBusy_ADC1 || IsBusy_ADC2);
+	HAL_Delay(2);
 }
 
 // send buffer over uart non blocking using dma
@@ -34,22 +98,12 @@ void sendBufferUart(uint8_t *pData, uint16_t Size)
 //	HAL_UART_DMAResume(&huart1);
 }
 
-void UART_DMA_Done_IRQHandler()
+void sendOk(bool ok)
 {
-	// todo: remove
-	HAL_UART_DMAPause(&huart3);
-	//HAL_UART_DMAPause(&huart1);
-	IsBusy_UART_DMA = false;
-}
+	uint8_t msgRet = ok ? 0x00 : 0xFF;
+	// todo: remove uart3 -> uart 1
+	HAL_UART_Transmit(&huart3, (uint8_t*)&msgRet, 1, 1000);
 
-void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
-{
-	if ((char)uart_rx_byte == '1')
-		sendBufferUart((uint8_t *)&UART_Buffer2, 100);
-	//HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
-	// todo: remove
-	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
-	//__HAL_UART_FLUSH_DRREGISTER()
 }
 
 void setFilterBaseFreq (uint32_t freq)
@@ -83,8 +137,60 @@ uint32_t setVCOFreq(uint32_t freq)
 
 }
 
-
 void setVCOOffset(uint32_t offset)
 {
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, offset);
 }
+
+void startDAQ()
+{
+	IsBusy_ADC2 = IsBusy_ADC1 = true;
+	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
+		HALT("=> ADC_DMA startup failure");
+	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2Buffer, ADC_BUFFER_SIZE) != HAL_OK)
+		HALT("=> ADC_DMA startup failure");
+	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
+		HALT("=> DAC1 startup failure");
+}
+
+void UART_DMA_Done_IRQHandler()
+{
+	// todo: remove
+	HAL_UART_DMAPause(&huart3);
+	//HAL_UART_DMAPause(&huart1);
+	IsBusy_UART_DMA = false;
+}
+
+void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
+{
+	//__HAL_UART_FLUSH_DRREGISTER() // really needed? some examples use this
+	switch(RxMode)
+	{
+		case RxMode_GetCommands:
+			UART_RXBuffer[UART_RXBufferBytes] = uart_rx_byte;
+			UART_RXBufferBytes++;
+			UART_RXBufferBytes %= UART_RXBUFFER_SIZE;
+			break;
+		case RxMode_RxStream:
+			RxStreamBuffer[RxStreamBufferBytes] = uart_rx_byte;
+			RxStreamBufferBytes++;
+			if (RxStreamBufferBytes >= RX_STREAM_BUFFER_SIZE)
+			{
+				RxStreamBufferBytes = 0;
+				RxMode = RxMode_GetCommands;
+			}
+			break;
+	}
+	// receive next byte
+	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+}
+
+void HALT(const char* str)
+{
+	printf(str);
+	while(1);
+}
+
+
+
+

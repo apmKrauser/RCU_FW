@@ -34,7 +34,6 @@
 #include <stdbool.h>
 #include "stm32f4xx_hal.h"
 #include "systemclock.h"
-#include "RadarControl.h"
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
@@ -45,6 +44,8 @@
 #include "gpio.h"
 #include "stm32_hal_legacy.h"
 #include "config.h"
+#include "commands.h"
+#include "RadarControl.h"
 // #include <stdio.h>
 
 
@@ -71,8 +72,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 //volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
-uint16_t ADC1Buffer[2048];
-uint16_t ADC2Buffer[2048];
+
 
 char UART_Buffer[100] = "Test 0 Text\r\n";
 
@@ -141,7 +141,7 @@ int main(void)
   // Trigger receivement of uart bytes
  // HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
   // todo: remove
-  HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+ // HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
   //sendBufferUart((uint8_t *)&UART_Buffer, 100);
   /* USER CODE END 2 */
 
@@ -149,6 +149,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  checkAndProcessCommand();
 
 	  //TIM Update Frequency = TIM Clock / (P * Q)
 	  //Prescaler = P - 1, Period = Q - 1

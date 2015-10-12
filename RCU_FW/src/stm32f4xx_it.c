@@ -34,6 +34,8 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
+#include "adc.h"
+#include "dac.h"
 #include "RadarControl.h"
 
 #include "usart.h"
@@ -77,8 +79,18 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	// todo: remove
+	if(huart->Instance == USART3)
+	{
+		HAL_UART_RxByte_IRQHandler(huart);
+	}
+}
+
 /**
 * @brief This function handles DMA1 Stream5 global interrupt.
+* for DAC_1 (VCO) [not used in this version]
 */
 void DMA1_Stream5_IRQHandler(void)
 {
@@ -93,12 +105,16 @@ void DMA1_Stream5_IRQHandler(void)
 
 /**
 * @brief This function handles DMA2 Stream0 global interrupt.
+* for ADC_1 (IF)
 */
 void DMA2_Stream0_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
-  //HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
-  //DMA_ClearITPendingBit(DMA2_Stream0, DMA_IT_TCIF0);
+  //DMA_ClearITPendingBit(DMA2_Stream0, DMA_IT_TCIF0);  // needed?
+  HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
+  // Stop ADC + DAC(VCO)
+  HAL_ADC_Stop_DMA(&hadc1);
+  HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
   /* USER CODE END DMA2_Stream0_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_adc1);
   /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
@@ -108,11 +124,12 @@ void DMA2_Stream0_IRQHandler(void)
 
 /**
 * @brief This function handles DMA2 Stream2 global interrupt.
+* for ADC_2 (Q)
 */
 void DMA2_Stream2_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
-
+  HAL_ADC_Stop_DMA(&hadc2);
   /* USER CODE END DMA2_Stream2_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_adc2);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
@@ -122,6 +139,7 @@ void DMA2_Stream2_IRQHandler(void)
 
 /**
 * @brief This function handles DMA2 Stream7 global interrupt.
+* for UART_1
 */
 void DMA2_Stream7_IRQHandler(void)
 {
@@ -137,6 +155,7 @@ void DMA2_Stream7_IRQHandler(void)
 // @Todo: delme remove !!!
 /**
 * @brief This function handles DMA1 Stream3 global interrupt.
+* for UART_3
 */
 void DMA1_Stream3_IRQHandler(void)
 {
@@ -149,14 +168,6 @@ void DMA1_Stream3_IRQHandler(void)
   /* USER CODE END DMA1_Stream3_IRQn 1 */
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	// todo: remove
-	if(huart->Instance == USART3)
-	{
-		HAL_UART_RxByte_IRQHandler(huart);
-	}
-}
 
 /**
 * @brief This function handles USART1 global interrupt.
