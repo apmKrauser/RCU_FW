@@ -12,8 +12,6 @@
 #include "stm32f4xx_hal.h"
 #include "commands.h"
 
-#define RX_STREAM_BUFFER_SIZE 2048
-#define ADC_BUFFER_SIZE 2048
 
 
 volatile uint8_t RxStreamBuffer[RX_STREAM_BUFFER_SIZE];
@@ -30,7 +28,9 @@ uint32_t setVCOFreq(uint32_t freq);
 void setVCOOffset(uint32_t freq);
 void startDAQ();
 void sendBufferUart(uint8_t *pData, uint16_t Size);
-void sendOk(bool ok);
+void sendUARTOk(bool ok);
+void sendUARTUInt32(uint32_t val);
+void startUARTRxIT();
 
 // IRQ Handlers
 void UART_DMA_Done_IRQHandler();

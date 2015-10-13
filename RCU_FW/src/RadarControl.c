@@ -49,6 +49,7 @@ bool checkAndProcessCommand()
 
 void processCommand(Command_Struct cmd)
 {
+    uint32_t freq;
 	switch (cmd.command)
 	{
 		case CMD_NOOP:
@@ -65,9 +66,17 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_GetAndSendADC2:
 			break;
+		case CMD_ConfigVCO:
+			freq = setVCOFreq(cmd.param1);
+			setVCOOffset(cmd.param2);
+			// return actual frequency
+			sendUARTUInt32(freq);
+			break;
+		case CMD_ConfigFilter:
+			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;
-			sendOk(true);
+			sendUARTOk(true);
 			break;
 	}
 	CurrentCommand = CommandNOOP;
@@ -98,7 +107,12 @@ void sendBufferUart(uint8_t *pData, uint16_t Size)
 //	HAL_UART_DMAResume(&huart1);
 }
 
-void sendOk(bool ok)
+void sendUARTUInt32(uint32_t val)
+{
+	HAL_UART_Transmit(&huart3, (uint8_t*)&val, 4, 1000);
+}
+
+void sendUARTOk(bool ok)
 {
 	uint8_t msgRet = ok ? 0x00 : 0xFF;
 	// todo: remove uart3 -> uart 1
@@ -145,12 +159,21 @@ void setVCOOffset(uint32_t offset)
 void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
+	// Enables ADC DMA request
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
 	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
+	//  Start VCO modulating DAC
 	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
 		HALT("=> DAC1 startup failure");
+}
+
+void startUARTRxIT()
+{
+	// request byte from UART (needed for interrupt to occur)
+	// todo: remove 3 => 1
+	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
 }
 
 void UART_DMA_Done_IRQHandler()
