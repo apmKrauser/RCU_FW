@@ -79,6 +79,15 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	// todo: remove
+	if(huart->Instance == USART3)
+	{
+		UART_DMA_Done_IRQHandler();
+	}
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	// todo: remove
@@ -86,6 +95,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		HAL_UART_RxByte_IRQHandler(huart);
 	}
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+	DAQ_DMA_Done_IRQHandler(hadc);
 }
 
 /**
@@ -111,10 +125,6 @@ void DMA2_Stream0_IRQHandler(void)
 {
 	/* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
 	//DMA_ClearITPendingBit(DMA2_Stream0, DMA_IT_TCIF0);  // needed?
-	HAL_GPIO_TogglePin(GPIOD_BASE, (1<<12));
-	// Stop ADC + DAC(VCO)
-	HAL_ADC_Stop_DMA(&hadc1);
-	HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
 	/* USER CODE END DMA2_Stream0_IRQn 0 */
 	HAL_DMA_IRQHandler(&hdma_adc1);
 	/* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
@@ -129,7 +139,6 @@ void DMA2_Stream0_IRQHandler(void)
 void DMA2_Stream2_IRQHandler(void)
 {
 	/* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
-	HAL_ADC_Stop_DMA(&hadc2);
 	/* USER CODE END DMA2_Stream2_IRQn 0 */
 	HAL_DMA_IRQHandler(&hdma_adc2);
 	/* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
@@ -147,7 +156,6 @@ void DMA2_Stream7_IRQHandler(void)
 	/* USER CODE END DMA2_Stream7_IRQn 0 */
 	HAL_DMA_IRQHandler(&hdma_usart1_tx);
 	/* USER CODE BEGIN DMA2_Stream7_IRQn 1 */
-	UART_DMA_Done_IRQHandler();
 
 	/* USER CODE END DMA2_Stream7_IRQn 1 */
 }
@@ -163,7 +171,6 @@ void DMA1_Stream3_IRQHandler(void)
 	/* USER CODE END DMA1_Stream3_IRQn 0 */
 	HAL_DMA_IRQHandler(&hdma_usart3_tx);
 	/* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
-	UART_DMA_Done_IRQHandler();
 
 	/* USER CODE END DMA1_Stream3_IRQn 1 */
 }

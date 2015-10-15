@@ -34,6 +34,7 @@ void startUARTRxIT();
 
 // IRQ Handlers
 void UART_DMA_Done_IRQHandler();
+void DAQ_DMA_Done_IRQHandler(ADC_HandleTypeDef *hadc);
 void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 

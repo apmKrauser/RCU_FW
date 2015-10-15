@@ -96,22 +96,23 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* hdac)
 
     /* Peripheral DMA init*/
   
-    hdma_dac1.Instance = DMA1_Stream5;
-    hdma_dac1.Init.Channel = DMA_CHANNEL_7;
-    hdma_dac1.Init.Direction = DMA_MEMORY_TO_PERIPH;
-    hdma_dac1.Init.PeriphInc = DMA_PINC_DISABLE;
-    hdma_dac1.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_dac1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-    hdma_dac1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-    hdma_dac1.Init.Mode = DMA_CIRCULAR;
-    hdma_dac1.Init.Priority = DMA_PRIORITY_MEDIUM;
-    hdma_dac1.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-    hdma_dac1.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
-    hdma_dac1.Init.MemBurst = DMA_MBURST_SINGLE;
-    hdma_dac1.Init.PeriphBurst = DMA_PBURST_SINGLE;
-    HAL_DMA_Init(&hdma_dac1);
-
-    __HAL_LINKDMA(hdac,DMA_Handle1,hdma_dac1);
+    // use triangle generator instead of dma
+//    hdma_dac1.Instance = DMA1_Stream5;
+//    hdma_dac1.Init.Channel = DMA_CHANNEL_7;
+//    hdma_dac1.Init.Direction = DMA_MEMORY_TO_PERIPH;
+//    hdma_dac1.Init.PeriphInc = DMA_PINC_DISABLE;
+//    hdma_dac1.Init.MemInc = DMA_MINC_ENABLE;
+//    hdma_dac1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+//    hdma_dac1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+//    hdma_dac1.Init.Mode = DMA_CIRCULAR;
+//    hdma_dac1.Init.Priority = DMA_PRIORITY_MEDIUM;
+//    hdma_dac1.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+//    hdma_dac1.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
+//    hdma_dac1.Init.MemBurst = DMA_MBURST_SINGLE;
+//    hdma_dac1.Init.PeriphBurst = DMA_PBURST_SINGLE;
+//    HAL_DMA_Init(&hdma_dac1);
+//
+//    __HAL_LINKDMA(hdac,DMA_Handle1,hdma_dac1);
 
   /* USER CODE BEGIN DAC_MspInit 1 */
 

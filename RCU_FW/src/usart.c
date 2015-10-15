@@ -121,7 +121,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart1_tx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart1_tx.Init.Mode = DMA_CIRCULAR;
+    hdma_usart1_tx.Init.Mode = DMA_NORMAL;
     hdma_usart1_tx.Init.Priority = DMA_PRIORITY_LOW;
     hdma_usart1_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     hdma_usart1_tx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
@@ -166,7 +166,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart3_tx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart3_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart3_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart3_tx.Init.Mode = DMA_CIRCULAR;
+    hdma_usart3_tx.Init.Mode = DMA_NORMAL;
     hdma_usart3_tx.Init.Priority = DMA_PRIORITY_LOW;
     hdma_usart3_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     hdma_usart3_tx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;

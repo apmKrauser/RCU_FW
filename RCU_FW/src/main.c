@@ -79,20 +79,21 @@ int main(void)
 	HAL_Delay(1000);
 	printf("Hello world ... \r\n");
 
+	printf("Test ... \r\n");
+	ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
+	setVCOOffset(128);    // check sConfig.SamplingTime
+	setFilterBaseFreq(2048);
+	//HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
+
 
 	// --- main loop ---
 	while (1)
 	{
 
-		HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
-		checkAndProcessCommand();
-		HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
-
-		printf("Test ... \r\n");
-		ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
-		setVCOOffset(128);    // check sConfig.SamplingTime
-		setFilterBaseFreq(2048);
 		//HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
+		checkAndProcessCommand();
+		//HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
+
 		HAL_Delay(500);
 
 	} // main loop
@@ -122,14 +123,11 @@ void SysInits()
 	MX_USART1_UART_Init();
 	MX_USART3_UART_Init();
 
-	// Enables ADC and starts conversion of the regular channels.
-	if( HAL_ADC_Start(&hadc1) != HAL_OK)
-		HALT("=> [init]: ADC1 startup failure");
-	if( HAL_ADC_Start(&hadc2) != HAL_OK)
-		HALT("=> [init]: ADC1 startup failure");
-
 	// Startup DAC trigger timer
 	HAL_TIM_Base_Start(&htim6);
+	// important to start adc immediately for some reason
+	// otherwise dma irq will never be called
+	startDAQ();
 
 	// request byte from UART (needed for interrupt to occur)
 	startUARTRxIT();

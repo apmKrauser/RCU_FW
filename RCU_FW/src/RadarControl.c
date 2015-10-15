@@ -39,9 +39,9 @@ Command_Struct CurrentCommand = CommandNOOP_init;
 bool checkAndProcessCommand()
 {
 	if (RxMode != RxMode_GetCommands) return false;
-	if (cmdCheckRxBuffer(&CurrentCommand, (uint8_t*) &UART_RXBuffer, RxStreamBufferBytes))
+	if (cmdCheckRxBuffer(&CurrentCommand, (uint8_t*) &UART_RXBuffer, UART_RXBufferBytes))
 	{
-		  RxStreamBufferBytes = 0;
+		  UART_RXBufferBytes = 0;
 		  processCommand(CurrentCommand);
 		  return true;
 	} else return false;
@@ -55,16 +55,21 @@ void processCommand(Command_Struct cmd)
 		case CMD_NOOP:
 			break;
 		case CMD_GetADC1Buffer:
-			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE);
+			//ADC_BUFFER_SIZE*2 <- adc buffer = 16bit array
+			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE*2);
 			break;
 		case CMD_GetADC2Buffer:
+			sendBufferUart((uint8_t*) &ADC2Buffer, ADC_BUFFER_SIZE*2);
 			break;
 		case CMD_GetAndSendADC1:
 			startDAQ();
 			awaitDAQComplete();
-			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE);
+			sendBufferUart((uint8_t*) &ADC1Buffer, ADC_BUFFER_SIZE*2);
 			break;
 		case CMD_GetAndSendADC2:
+			startDAQ();
+			awaitDAQComplete();
+			sendBufferUart((uint8_t*) &ADC2Buffer, ADC_BUFFER_SIZE*2);
 			break;
 		case CMD_ConfigVCO:
 			freq = setVCOFreq(cmd.param1);
@@ -102,7 +107,8 @@ void sendBufferUart(uint8_t *pData, uint16_t Size)
 	IsBusy_UART_DMA = true;
 	// todo: remove
 	HAL_UART_Transmit_DMA(&huart3, pData, Size);
-	HAL_UART_DMAResume(&huart3);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
+	//HAL_UART_DMAResume(&huart3);
 //	HAL_UART_Transmit_DMA(&huart1, pData, Size);
 //	HAL_UART_DMAResume(&huart1);
 }
@@ -159,7 +165,12 @@ void setVCOOffset(uint32_t offset)
 void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
-	// Enables ADC DMA request
+	// Enables ADC and starts conversion of the regular channels.
+	if( HAL_ADC_Start(&hadc1) != HAL_OK)
+		HALT("=> [init]: ADC1 startup failure");
+	if( HAL_ADC_Start(&hadc2) != HAL_OK)
+		HALT("=> [init]: ADC1 startup failure");
+	// Enables ADC DMA
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
 	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2Buffer, ADC_BUFFER_SIZE) != HAL_OK)
@@ -167,6 +178,7 @@ void startDAQ()
 	//  Start VCO modulating DAC
 	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
 		HALT("=> DAC1 startup failure");
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 }
 
 void startUARTRxIT()
@@ -176,11 +188,25 @@ void startUARTRxIT()
 	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
 }
 
+
+void DAQ_DMA_Done_IRQHandler(ADC_HandleTypeDef *hadc)
+{
+	IsBusy_ADC1 = IsBusy_ADC2 = false;
+	// Stop ADC + DAC(VCO)
+	HAL_ADC_Stop_DMA(&hadc1);
+	HAL_ADC_Stop_DMA(&hadc2);
+	HAL_ADC_Stop(&hadc1);
+	HAL_ADC_Stop(&hadc2);
+	HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
+}
+
 void UART_DMA_Done_IRQHandler()
 {
 	// todo: remove
-	HAL_UART_DMAPause(&huart3);
+	//HAL_UART_DMAPause(&huart3);
 	//HAL_UART_DMAPause(&huart1);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_RESET);
 	IsBusy_UART_DMA = false;
 }
 
