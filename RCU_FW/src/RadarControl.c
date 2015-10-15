@@ -249,16 +249,16 @@ void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
 	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
-	// Enables ADC and starts conversion of the regular channels.
-	if( HAL_ADC_Start(&hadc1) != HAL_OK)
-		HALT("=> [init]: ADC1 startup failure");
-	if( HAL_ADC_Start(&hadc2) != HAL_OK)
-		HALT("=> [init]: ADC1 startup failure");
 	// Enables ADC DMA
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
 	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
+	// Enables ADC and starts conversion of the regular channels.
+	if( HAL_ADC_Start(&hadc1) != HAL_OK)
+		HALT("=> [init]: ADC1 startup failure");
+	if( HAL_ADC_Start(&hadc2) != HAL_OK)
+		HALT("=> [init]: ADC1 startup failure");
 	//  Start VCO modulating DAC
 	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
 		HALT("=> DAC1 startup failure");
