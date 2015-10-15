@@ -79,6 +79,12 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_ConfigFilter:
 			break;
+		case CMD_ConfigADCRate:
+			setADCRate(cmd.param1);
+			startDAQ();
+			awaitDAQComplete();
+			sendUARTOk(true);
+			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;
 			sendUARTOk(true);
@@ -154,7 +160,84 @@ uint32_t setVCOFreq(uint32_t freq)
 #endif
 	return vcofreq;
 	//HAL_TIM_Base_Start(&htim6);
+}
 
+void setADCRate(uint32_t freqid)
+{
+	ADC_ChannelConfTypeDef sConfig1;
+	ADC_ChannelConfTypeDef sConfig2;
+	sConfig1.Channel = ADC_CHANNEL_1;
+	sConfig2.Channel = ADC_CHANNEL_2;
+	sConfig1.Rank = 1;
+	sConfig1.Rank = 2;
+
+	switch(freqid)
+	{
+		case 1:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 480);
+			#endif
+			break;
+		case 2:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_144CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_144CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 144);
+			#endif
+			break;
+		case 3:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 112);
+			#endif
+			break;
+		case 4:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_84CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_84CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 84);
+			#endif
+			break;
+		case 5:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_56CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_56CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 56);
+			#endif
+			break;
+		case 6:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_28CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_28CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 28);
+			#endif
+			break;
+		case 7:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_15CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_15CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 15);
+			#endif
+			break;
+		case 8:
+			sConfig1.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+			sConfig2.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+			#ifdef VERBOSE_DEBUG
+				printf("ADC SamplingTime set to %u\r\n", 3);
+			#endif
+			break;
+		default:
+			#ifdef VERBOSE_DEBUG
+				printf("ADC ignored undefined SamplingTime.");
+			#endif
+			// abort channel config
+			return;
+	}
+	HAL_ADC_ConfigChannel(&hadc1, &sConfig1);
+	HAL_ADC_ConfigChannel(&hadc2, &sConfig2);
 }
 
 void setVCOOffset(uint32_t offset)
@@ -165,6 +248,7 @@ void setVCOOffset(uint32_t offset)
 void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	// Enables ADC and starts conversion of the regular channels.
 	if( HAL_ADC_Start(&hadc1) != HAL_OK)
 		HALT("=> [init]: ADC1 startup failure");
@@ -178,7 +262,6 @@ void startDAQ()
 	//  Start VCO modulating DAC
 	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
 		HALT("=> DAC1 startup failure");
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 }
 
 void startUARTRxIT()
@@ -191,13 +274,13 @@ void startUARTRxIT()
 
 void DAQ_DMA_Done_IRQHandler(ADC_HandleTypeDef *hadc)
 {
-	IsBusy_ADC1 = IsBusy_ADC2 = false;
 	// Stop ADC + DAC(VCO)
 	HAL_ADC_Stop_DMA(&hadc1);
 	HAL_ADC_Stop_DMA(&hadc2);
 	HAL_ADC_Stop(&hadc1);
 	HAL_ADC_Stop(&hadc2);
 	HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
+	IsBusy_ADC1 = IsBusy_ADC2 = false;
 	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
 }
 

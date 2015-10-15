@@ -25,6 +25,7 @@ void waitSendBufferUart();
 void awaitDAQComplete();
 void setFilterBaseFreq (uint32_t freq);
 uint32_t setVCOFreq(uint32_t freq);
+void setADCRate(uint32_t freqid);
 void setVCOOffset(uint32_t freq);
 void startDAQ();
 void sendBufferUart(uint8_t *pData, uint16_t Size);

@@ -48,7 +48,7 @@ DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 
 /* ADC1 init function */
-void MX_ADC1_Init(void)
+void MX_ADC1_Init(uint32_t ADC_SAMPLETIME_FLAGS)
 {
   ADC_ChannelConfTypeDef sConfig;
 
@@ -76,12 +76,12 @@ void MX_ADC1_Init(void)
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = 1;
   //sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_FLAGS;
   HAL_ADC_ConfigChannel(&hadc1, &sConfig);
 
 }
 /* ADC2 init function */
-void MX_ADC2_Init(void)
+void MX_ADC2_Init(uint32_t ADC_SAMPLETIME_FLAGS)
 {
   ADC_ChannelConfTypeDef sConfig;
 
@@ -104,7 +104,7 @@ void MX_ADC2_Init(void)
     */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_FLAGS;
   HAL_ADC_ConfigChannel(&hadc2, &sConfig);
 
 }
@@ -140,7 +140,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_adc1.Init.Mode = DMA_CIRCULAR;
     hdma_adc1.Init.Priority = DMA_PRIORITY_HIGH;
-    hdma_adc1.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    hdma_adc1.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
     hdma_adc1.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_HALFFULL;
     hdma_adc1.Init.MemBurst = DMA_MBURST_SINGLE;
     hdma_adc1.Init.PeriphBurst = DMA_PBURST_SINGLE;
@@ -179,7 +179,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     hdma_adc2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_adc2.Init.Mode = DMA_CIRCULAR;
     hdma_adc2.Init.Priority = DMA_PRIORITY_HIGH;
-    hdma_adc2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    hdma_adc2.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
     hdma_adc2.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_HALFFULL;
     hdma_adc2.Init.MemBurst = DMA_MBURST_SINGLE;
     hdma_adc2.Init.PeriphBurst = DMA_PBURST_SINGLE;

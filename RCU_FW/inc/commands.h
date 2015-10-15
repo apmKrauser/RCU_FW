@@ -24,6 +24,7 @@ typedef enum {
 	CMD_GetAndSendADC2  = 0x04,
 	CMD_ConfigVCO		= 0x11,
 	CMD_ConfigFilter	= 0x12,
+	CMD_ConfigADCRate   = 0x13,
 	CMD_StreamToBuffer  = 0x41
 } RxCommand_t;
 

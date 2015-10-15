@@ -112,8 +112,8 @@ void SysInits()
 	// Initialize all configured peripherals
 	MX_GPIO_Init();
 	MX_DMA_Init();
-	MX_ADC1_Init();
-	MX_ADC2_Init();
+	MX_ADC1_Init(ADC_SAMPLETIME_56CYCLES);
+	MX_ADC2_Init(ADC_SAMPLETIME_56CYCLES);
 	MX_DAC_Init();
 	MX_I2C1_Init();
 	MX_I2C2_Init();

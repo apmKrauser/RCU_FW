@@ -44,8 +44,8 @@
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 
-void MX_ADC1_Init(void);
-void MX_ADC2_Init(void);
+void MX_ADC1_Init(uint32_t ADC_SAMPLETIME_FLAGS);
+void MX_ADC2_Init(uint32_t ADC_SAMPLETIME_FLAGS);
 
 #ifdef __cplusplus
 }
