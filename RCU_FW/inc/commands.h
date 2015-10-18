@@ -41,6 +41,31 @@ typedef struct
 	uint32_t param3;
 } Command_Struct;
 
+
+// LTC6602 Filter Gains
+typedef enum {
+	Filter_00dB = 0x00,
+	Filter_12dB = 0x01,
+	Filter_24dB = 0x02,
+	Filter_30dB = 0x03
+} FilterGain_t;
+
+// Value which base frequency is divided by
+typedef enum {
+	Filter_LowPass_Div600    = 0x00,
+	Filter_LowPass_Div300    = 0x01,
+	Filter_LowPass_Div100    = 0x02,
+	Filter_LowPass_Div100Max = 0x03
+} FilterLowPassBaseDiv_t;
+
+// same with highpass
+typedef enum {
+	Filter_HighPass_Div6000 = 0x00,
+	Filter_HighPass_Div3000 = 0x01,
+	Filter_HighPass_Div1000 = 0x02,
+	Filter_HighPass_Bypass  = 0x03
+} FilterHighPassBaseDiv_t;
+
 Command_Struct CommandNOOP;
 
 bool cmdCheckRxBuffer(Command_Struct* cmd, uint8_t* RxBuffer, uint16_t BufferLen);

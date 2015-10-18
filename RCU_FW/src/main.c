@@ -77,13 +77,15 @@ int main(void)
 	// --- Initialization ---
 	SysInits();
 	HAL_Delay(1000);
-	printf("Hello world ... \r\n");
 
-	printf("Test ... \r\n");
+	printf("Entering world ... \r\n");
 	ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
 	setVCOOffset(128);    // check sConfig.SamplingTime
+	// Filter Configuration
+	setFilterGain(Filter_00dB);
 	setFilterBaseFreq(2048);
-	//HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
+	setFilterBandpass(Filter_HighPass_Div6000, Filter_LowPass_Div300);
+	printf("Hello world! \r\n");
 
 
 	// --- main loop ---

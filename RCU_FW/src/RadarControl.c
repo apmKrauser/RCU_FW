@@ -138,6 +138,32 @@ void setFilterBaseFreq (uint32_t freq)
 	HAL_DAC_Start(&hdac,DAC_CHANNEL_2);
 }
 
+void setFilterGain (FilterGain_t gain)
+{
+	HAL_GPIO_WritePin(Pin_GAIN0, (gain & 0b01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Pin_GAIN1, (gain & 0b10) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}
+
+void setFilterBandpass (FilterHighPassBaseDiv_t highp, FilterLowPassBaseDiv_t lowp)
+{
+	// High pass
+	HAL_GPIO_WritePin(Pin_HPF0, (highp & 0b01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Pin_HPF1, (highp & 0b10) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	// High pass
+	HAL_GPIO_WritePin(Pin_LPF0, (lowp & 0b01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Pin_LPF1, (lowp & 0b10) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}
+
+void setModulePowerSwitches (uint8_t moduleBitmask)
+{
+
+}
+
+void MPlexSelectModule (uint8_t idx)
+{
+
+}
+
 uint32_t setVCOFreq(uint32_t freq)
 {
 	uint32_t vcofreq;
