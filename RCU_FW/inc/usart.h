@@ -42,12 +42,9 @@
 #include "stm32f4xx_hal.h"
 
 extern UART_HandleTypeDef huart1;
-// todo: remove
-extern UART_HandleTypeDef huart3;
 
 void MX_USART1_UART_Init(void);
-// todo: remove
-void MX_USART3_UART_Init(void);
+
 
 #ifdef __cplusplus
 }

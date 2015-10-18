@@ -46,14 +46,11 @@
 /* Exported functions ------------------------------------------------------- */
 
 void SysTick_Handler(void);
-// todo: remove
-void DMA1_Stream3_IRQHandler(void);
+
 void DMA1_Stream5_IRQHandler(void);
 void DMA2_Stream0_IRQHandler(void);
 void DMA2_Stream2_IRQHandler(void);
-// Todo: remove
 
-void USART3_IRQHandler(void);
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);

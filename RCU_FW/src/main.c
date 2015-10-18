@@ -123,7 +123,6 @@ void SysInits()
 	MX_TIM1_Init();
 	MX_TIM6_Init();
 	MX_USART1_UART_Init();
-	MX_USART3_UART_Init();
 
 	// Startup DAC trigger timer
 	HAL_TIM_Base_Start(&htim6);

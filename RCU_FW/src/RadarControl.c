@@ -111,24 +111,19 @@ void awaitDAQComplete()
 void sendBufferUart(uint8_t *pData, uint16_t Size)
 {
 	IsBusy_UART_DMA = true;
-	// todo: remove
-	HAL_UART_Transmit_DMA(&huart3, pData, Size);
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
-	//HAL_UART_DMAResume(&huart3);
-//	HAL_UART_Transmit_DMA(&huart1, pData, Size);
+	HAL_UART_Transmit_DMA(&huart1, pData, Size);
 //	HAL_UART_DMAResume(&huart1);
 }
 
 void sendUARTUInt32(uint32_t val)
 {
-	HAL_UART_Transmit(&huart3, (uint8_t*)&val, 4, 1000);
+	HAL_UART_Transmit(&huart1, (uint8_t*)&val, 4, 1000);
 }
 
 void sendUARTOk(bool ok)
 {
 	uint8_t msgRet = ok ? 0x00 : 0xFF;
-	// todo: remove uart3 -> uart 1
-	HAL_UART_Transmit(&huart3, (uint8_t*)&msgRet, 1, 1000);
+	HAL_UART_Transmit(&huart1, (uint8_t*)&msgRet, 1, 1000);
 
 }
 
@@ -274,7 +269,6 @@ void setVCOOffset(uint32_t offset)
 void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	// Enables ADC DMA
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
@@ -293,8 +287,7 @@ void startDAQ()
 void startUARTRxIT()
 {
 	// request byte from UART (needed for interrupt to occur)
-	// todo: remove 3 => 1
-	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+	HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
 }
 
 
@@ -307,15 +300,11 @@ void DAQ_DMA_Done_IRQHandler(ADC_HandleTypeDef *hadc)
 	HAL_ADC_Stop(&hadc2);
 	HAL_DAC_Stop(&hdac, DAC_CHANNEL_1);
 	IsBusy_ADC1 = IsBusy_ADC2 = false;
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
 }
 
 void UART_DMA_Done_IRQHandler()
 {
-	// todo: remove
-	//HAL_UART_DMAPause(&huart3);
 	//HAL_UART_DMAPause(&huart1);
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_RESET);
 	IsBusy_UART_DMA = false;
 }
 
@@ -340,7 +329,7 @@ void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
 			break;
 	}
 	// receive next byte
-	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+	HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
 }
 
 void HALT(const char* str)

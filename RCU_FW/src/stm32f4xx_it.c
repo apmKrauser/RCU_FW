@@ -50,8 +50,6 @@ extern DMA_HandleTypeDef hdma_adc2;
 extern DMA_HandleTypeDef hdma_dac1;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
-// todo: remove
-extern DMA_HandleTypeDef hdma_usart3_tx;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -81,8 +79,7 @@ void SysTick_Handler(void)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-	// todo: remove
-	if(huart->Instance == USART3)
+	if(huart->Instance == USART1)
 	{
 		UART_DMA_Done_IRQHandler();
 	}
@@ -90,8 +87,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	// todo: remove
-	if(huart->Instance == USART3)
+	if(huart->Instance == USART1)
 	{
 		HAL_UART_RxByte_IRQHandler(huart);
 	}
@@ -160,21 +156,6 @@ void DMA2_Stream7_IRQHandler(void)
 	/* USER CODE END DMA2_Stream7_IRQn 1 */
 }
 
-// @Todo: delme remove !!!
-/**
- * @brief This function handles DMA1 Stream3 global interrupt.
- * for UART_3
- */
-void DMA1_Stream3_IRQHandler(void)
-{
-	/* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
-	/* USER CODE END DMA1_Stream3_IRQn 0 */
-	HAL_DMA_IRQHandler(&hdma_usart3_tx);
-	/* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
-
-	/* USER CODE END DMA1_Stream3_IRQn 1 */
-}
-
 
 /**
  * @brief This function handles USART1 global interrupt.
@@ -190,21 +171,5 @@ void USART1_IRQHandler(void)
 	/* USER CODE END USART1_IRQn 1 */
 }
 
-/**
- * @brief This function handles USART1 global interrupt.
- */
-// todo: remove
-void USART3_IRQHandler(void)
-{
-	/* USER CODE BEGIN USART1_IRQn 0 */
 
-	/* USER CODE END USART1_IRQn 0 */
-	HAL_UART_IRQHandler(&huart3);
-	/* USER CODE BEGIN USART1_IRQn 1 */
-
-	/* USER CODE END USART1_IRQn 1 */
-}
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
