@@ -14,25 +14,25 @@
 
 
 // Pin definitions
-#define Pin_LED /* PD0 */ GPIOD_BASE, (1<<0)
+#define Pin_LED /* PD0 */ GPIOD_BASE, GPIO_PIN_0
 // Signal Multiplexer
-#define Pin_S0 /* PC7 */ GPIOC_BASE, (1<<7)
-#define Pin_S1 /* PC8 */ GPIOC_BASE, (1<<8)
-#define Pin_S2 /* PC9 */ GPIOC_BASE, (1<<9)
+#define Pin_S0 /* PC7 */ GPIOC_BASE, GPIO_PIN_7
+#define Pin_S1 /* PC8 */ GPIOC_BASE, GPIO_PIN_8
+#define Pin_S2 /* PC9 */ GPIOC_BASE, GPIO_PIN_9
 // Power selection
-#define Pin_Mod1 /* PD8 */  GPIOD_BASE, (1<<8)
-#define Pin_Mod2 /* PD9 */  GPIOD_BASE, (1<<9)
-#define Pin_Mod3 /* PD10 */ GPIOD_BASE, (1<<10)
-#define Pin_Mod4 /* PD11 */ GPIOD_BASE, (1<<11)
-#define Pin_Mod5 /* PD12 */ GPIOD_BASE, (1<<12)
-#define Pin_Mod6 /* PD13 */ GPIOD_BASE, (1<<13)
+#define Pin_Mod1 /* PD8 */  GPIOD_BASE, GPIO_PIN_8
+#define Pin_Mod2 /* PD9 */  GPIOD_BASE, GPIO_PIN_9
+#define Pin_Mod3 /* PD10 */ GPIOD_BASE, GPIO_PIN_10
+#define Pin_Mod4 /* PD11 */ GPIOD_BASE, GPIO_PIN_11
+#define Pin_Mod5 /* PD12 */ GPIOD_BASE, GPIO_PIN_12
+#define Pin_Mod6 /* PD13 */ GPIOD_BASE, GPIO_PIN_13
 // LTC6602
-#define Pin_GAIN0 /* PB0 */ GPIOB_BASE, (1<<0)
-#define Pin_GAIN1 /* PB1 */ GPIOB_BASE, (1<<1)
-#define Pin_HPF0  /* PA6 */ GPIOA_BASE, (1<<6)
-#define Pin_HPF1  /* PA7 */ GPIOA_BASE, (1<<7)
-#define Pin_LPF0  /* PC4 */ GPIOC_BASE, (1<<4)
-#define Pin_LPF1  /* PC5 */ GPIOC_BASE, (1<<5)
+#define Pin_GAIN0 /* PB0 */ GPIOB_BASE, GPIO_PIN_0
+#define Pin_GAIN1 /* PB1 */ GPIOB_BASE, GPIO_PIN_1
+#define Pin_HPF0  /* PA6 */ GPIOA_BASE, GPIO_PIN_6
+#define Pin_HPF1  /* PA7 */ GPIOA_BASE, GPIO_PIN_7
+#define Pin_LPF0  /* PC4 */ GPIOC_BASE, GPIO_PIN_4
+#define Pin_LPF1  /* PC5 */ GPIOC_BASE, GPIO_PIN_5
 
 
 
