@@ -129,6 +129,7 @@ void sendUARTOk(bool ok)
 
 void setFilterBaseFreq (uint32_t freq)
 {
+// 0V .. 3V => 40MHz .. 100MHz
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, freq);
 	HAL_DAC_Start(&hdac,DAC_CHANNEL_2);
 }

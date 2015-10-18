@@ -83,8 +83,8 @@ int main(void)
 	setVCOOffset(128);    // check sConfig.SamplingTime
 	// Filter Configuration
 	setFilterGain(Filter_00dB);
-	setFilterBaseFreq(2048);
-	setFilterBandpass(Filter_HighPass_Div6000, Filter_LowPass_Div300);
+	setFilterBaseFreq(0);
+	setFilterBandpass(Filter_HighPass_Bypass, Filter_LowPass_Div300);
 	printf("Hello world! \r\n");
 
 
