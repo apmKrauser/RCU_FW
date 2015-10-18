@@ -66,6 +66,8 @@
 // Private variables ---------------------------------------------------------
 uint32_t ret;
 
+
+
 // Private function prototypes -----------------------------------------------
 void SystemClock_Config(void);
 void SysInits();
@@ -76,9 +78,10 @@ int main(void)
 
 	// --- Initialization ---
 	SysInits();
+	printf("Entering world ... \r\n");
+
 	HAL_Delay(1000);
 
-	printf("Entering world ... \r\n");
 	ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
 	setVCOOffset(128);    // check sConfig.SamplingTime
 	// Filter Configuration
