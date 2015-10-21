@@ -78,6 +78,10 @@ void processCommand(Command_Struct cmd)
 			sendUARTUInt32(freq);
 			break;
 		case CMD_ConfigFilter:
+			setFilterBaseFreq(cmd.param1);
+			setFilterGain(cmd.param2);
+			setFilterBandpass((cmd.param3 & 0x03), (cmd.param3 >> 2) & 0x03);
+			sendUARTOk(true);
 			break;
 		case CMD_ConfigADCRate:
 			setADCRate(cmd.param1);
