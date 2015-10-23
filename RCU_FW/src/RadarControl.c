@@ -350,8 +350,8 @@ uint32_t map (uint32_t value, uint32_t origin_from, uint32_t origin_to, uint32_t
 {
 	uint32_t ret;
 	value = constrain(value, origin_from, origin_to);
-	double f = 1.0 * (target_to - target_from) / (origin_to - origin_from);
-	ret = (uint32_t) target_to + f * (value - origin_from);
+	double f = 1.0 * ((int64_t)target_to - (int64_t)target_from) / ((int64_t)origin_to - (int64_t)origin_from);
+	ret = (uint32_t)( target_to + f * (value - origin_from));
 	// constrain just in case
 	return constrain(ret, target_from, target_to);
 }
@@ -362,9 +362,10 @@ uint32_t constrain (uint32_t value, uint32_t border1, uint32_t border2)
 	uint32_t bmax;
 
 	bmin = MIN(border1,border2);
-	bmax= MAX(border1,border2);
+	bmax = MAX(border1,border2);
 	if (value < bmin)
 		value = bmin;
+	if (value > bmax)
 		value = bmax;
 	return value;
 }
