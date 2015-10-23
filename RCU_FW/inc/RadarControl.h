@@ -34,7 +34,8 @@
 #define Pin_LPF0  /* PC4 */ GPIOC_BASE, GPIO_PIN_4
 #define Pin_LPF1  /* PC5 */ GPIOC_BASE, GPIO_PIN_5
 
-
+#define MIN(X,Y) (((X) < (Y) )? (X) : (Y))
+#define MAX(X,Y) (((X) > (Y) )? (X) : (Y))
 
 volatile uint8_t RxStreamBuffer[RX_STREAM_BUFFER_SIZE];
 volatile uint16_t RxStreamBufferBytes;
@@ -58,6 +59,8 @@ void sendBufferUart(uint8_t *pData, uint16_t Size);
 void sendUARTOk(bool ok);
 void sendUARTUInt32(uint32_t val);
 void startUARTRxIT();
+uint32_t constrain (uint32_t value, uint32_t border1, uint32_t border2);
+uint32_t map (uint32_t value, uint32_t origin_from, uint32_t origin_to, uint32_t target_from, uint32_t target_to);
 
 // IRQ Handlers
 void UART_DMA_Done_IRQHandler();

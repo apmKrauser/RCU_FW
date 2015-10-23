@@ -134,7 +134,10 @@ void sendUARTOk(bool ok)
 void setFilterBaseFreq (uint32_t freq)
 {
 // 0V .. 3V => 40MHz .. 100MHz
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, freq);
+	uint32_t v_out;
+	v_out = map(freq, FILTER_BASEFREQ_MIN, FILTER_BASEFREQ_MAX,
+			FILTER_BASEFREQ_MIN_DAC, FILTER_BASEFREQ_MAX_DAC);
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, v_out);
 	HAL_DAC_Start(&hdac,DAC_CHANNEL_2);
 }
 
@@ -343,6 +346,28 @@ void HALT(const char* str)
 	while(1);
 }
 
+uint32_t map (uint32_t value, uint32_t origin_from, uint32_t origin_to, uint32_t target_from, uint32_t target_to)
+{
+	uint32_t ret;
+	value = constrain(value, origin_from, origin_to);
+	double f = 1.0 * (target_to - target_from) / (origin_to - origin_from);
+	ret = (uint32_t) target_to + f * (value - origin_from);
+	// constrain just in case
+	return constrain(ret, target_from, target_to);
+}
+
+uint32_t constrain (uint32_t value, uint32_t border1, uint32_t border2)
+{
+	uint32_t bmin;
+	uint32_t bmax;
+
+	bmin = MIN(border1,border2);
+	bmax= MAX(border1,border2);
+	if (value < bmin)
+		value = bmin;
+		value = bmax;
+	return value;
+}
 
 
 
