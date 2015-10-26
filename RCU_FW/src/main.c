@@ -78,12 +78,17 @@ int main(void)
 
 	// --- Initialization ---
 	SysInits();
+
+
 	printf("Entering world ... \r\n");
 
 	HAL_Delay(1000);
 
-	ret = setVCOFreq(3200);  // check adc.prescaler !! check dma int led blick
+	ret = setVCOFreq(500);  // check adc.prescaler !! check dma int led blick
 	setVCOOffset(128);    // check sConfig.SamplingTime
+	// todo: debug:
+	if (HAL_DAC_Start(&hdac,DAC_CHANNEL_1) != HAL_OK)
+		HALT("=> DAC1 startup failure");
 	// Filter Configuration
 	setFilterGain(Filter_00dB);
 	setFilterBaseFreq(0);
@@ -108,12 +113,12 @@ int main(void)
 
 void SysInits()
 {
+
 	// Reset of all peripherals, Initializes the Flash interface and the Systick.
 	HAL_Init();
 
 	// Configure the system clock
 	SystemClock_Config();
-
 	// Initialize all configured peripherals
 	MX_GPIO_Init();
 	MX_DMA_Init();

@@ -16,7 +16,7 @@
 
 #define FILTER_BASEFREQ_MIN       40000 // kHz
 #define FILTER_BASEFREQ_MAX      100000 // kHz
-#define FILTER_BASEFREQ_MIN_DAC       0 // dac value
-#define FILTER_BASEFREQ_MAX_DAC    3724 // dac value
+#define FILTER_BASEFREQ_MIN_DAC    3724 // dac value
+#define FILTER_BASEFREQ_MAX_DAC       0 // dac value
 
 #endif /* CONFIG_H_ */
