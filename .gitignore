@@ -56,6 +56,10 @@ Temporary Items
 # =========================
 
 # Windows image file caches
+Debug/
+debug/
+.metadata/
+.metadata
 Thumbs.db
 ehthumbs.db
 
@@ -74,4 +78,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.lock
-.Metadata
+

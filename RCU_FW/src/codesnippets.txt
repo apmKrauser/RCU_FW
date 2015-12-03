@@ -1,0 +1,31 @@
+
+
+// ADC multibuffer
+  HAL_DMAEx_MultiBufferStart(&hdma_adc3, hadc1.Instance->DR, (uint32_t) Buffer1, (uint32_t) Buffer2, 10);
+// adc
+  ADC_RegularChannelConfig(ADC1,ADC_Channel_12,2,ADC_SampleTime_480Cycles);
+  ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);
+// dac
+  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
+   HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)sine_wave_data, 32, DAC_ALIGN_12B_R);
+// discovery led
+   HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
+   HAL_GPIO_TogglePin(GPIOD_BASE, (1<<13));
+   
+// one of these printf putCh:   
+   int _write( int file, char *ptr, int len )
+   {
+     int txCount;
+     (void)file;
+     for ( txCount = 0; txCount < len; txCount++)
+     {
+   	  ITM_SendChar(ptr[txCount]);
+   	  //HAL_UART_Transmit(&huart1, (uint8_t*)&ptr[txCount], 1, 10000);
+     }
+     return len;
+   }
+   
+// 
+   char UART_Buffer[100] = "Test 0 Text\r\n";  
+   
+   
