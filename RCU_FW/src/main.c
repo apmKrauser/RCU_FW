@@ -50,6 +50,7 @@
 #include "stm32_hal_legacy.h"
 #include "config.h"
 #include "commands.h"
+#include "signal_processing.h"
 #include "RadarControl.h"
 // #include <stdio.h>
 

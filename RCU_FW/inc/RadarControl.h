@@ -41,6 +41,9 @@ volatile uint8_t RxStreamBuffer[RX_STREAM_BUFFER_SIZE];
 volatile uint16_t RxStreamBufferBytes;
 uint16_t ADC1Buffer[ADC_BUFFER_SIZE];
 uint16_t ADC2Buffer[ADC_BUFFER_SIZE];
+uint16_t ADC1BufferDelay;
+uint16_t ADC2BufferDelay;
+
 
 bool checkAndProcessCommand();
 void processCommand(Command_Struct cmd);
