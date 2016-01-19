@@ -11,6 +11,7 @@
 // Buffer comprising pairs of real and imaginary values
 // obtained from ADC capture
 float32_t inBufFFT[2*ADC_FFT_SIZE] = {0.0};
+arm_rfft_fast_instance_f32 rfft_instance;
 
 // inBuff will be overwritten?
 void runCFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay,
@@ -23,7 +24,7 @@ void runCFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay,
 	}
 
 	// run fft
-	arm_cfft_f32(FFT_DESCR, inBufFFT, 0, 1);
+	arm_cfft_f32(&cfft_instance, inBufFFT, 0, 1);
 
 	// Process the data through the Complex Magniture Module
 	arm_cmplx_mag_f32(inBufFFT, outBuffer, ADC_FFT_SIZE);
@@ -34,9 +35,13 @@ void runCFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay,
 
 void runRFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay, float32_t* outBuffer)
 {
+	arm_rfft_fast_init_f32(&rfft_instance, ADC_FFT_SIZE);
+
 	// fill float buffer with inphase(adc1) values
 	for (int i = 0; i < ADC_FFT_SIZE; ++i) {
 		inBufFFT[i]   = (float32_t) inSignalIF[i + inSignalIFDelay];
 	}
-	arm_rfft_fast_f32(RFFT_DESCR, inBufFFT, outBuffer, 0);
+	arm_rfft_fast_f32(&rfft_instance, inBufFFT, outBuffer, 0);
 }
+
+*/

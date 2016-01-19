@@ -37,6 +37,7 @@
 
 // Includes ------------------------------------------------------------------
 #include <stdbool.h>
+#include "config.h"
 #include "stm32f4xx_hal.h"
 #include "systemclock.h"
 #include "adc.h"
@@ -48,9 +49,8 @@
 #include "usart.h"
 #include "gpio.h"
 #include "stm32_hal_legacy.h"
-#include "config.h"
 #include "commands.h"
-#include "signal_processing.h"
+//#include "signal_processing.h"
 #include "RadarControl.h"
 // #include <stdio.h>
 

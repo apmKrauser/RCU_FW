@@ -30,6 +30,8 @@ volatile uint16_t RxStreamBufferBytes = 0;
 
 uint16_t ADC1Buffer[ADC_BUFFER_SIZE] = {0};
 uint16_t ADC2Buffer[ADC_BUFFER_SIZE] = {0};
+uint16_t ADC1BufferDelay = 0;
+uint16_t ADC2BufferDelay = 0;
 
 RxMode_t RxMode = RxMode_GetCommands;
 Command_Struct CurrentCommand = CommandNOOP_init;
@@ -91,6 +93,8 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;
+			ADC1BufferDelay = 0;
+			ADC2BufferDelay = 0;
 			sendUARTOk(true);
 			break;
 	}
@@ -198,7 +202,7 @@ void setADCRate(uint32_t freqid)
 	sConfig1.Channel = ADC_CHANNEL_1;
 	sConfig2.Channel = ADC_CHANNEL_2;
 	sConfig1.Rank = 1;
-	sConfig1.Rank = 2;
+	sConfig2.Rank = 1;
 
 	switch(freqid)
 	{
@@ -327,6 +331,8 @@ void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
 			UART_RXBufferBytes %= UART_RXBUFFER_SIZE;
 			break;
 		case RxMode_RxStream:
+			// Todo: use RX STREAM adc1 +2  !!!!
+			// rxstream ist 8 bit, adc ist 16 bit
 			RxStreamBuffer[RxStreamBufferBytes] = uart_rx_byte;
 			RxStreamBufferBytes++;
 			if (RxStreamBufferBytes >= RX_STREAM_BUFFER_SIZE)
