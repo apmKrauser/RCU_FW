@@ -23,13 +23,14 @@
 #define RX_STREAM_BUFFER_SIZE 4096
 #define ADC_BUFFER_SIZE       4096
 #define ADC_FFT_SIZE          2048
+/*
 const arm_cfft_instance_f32 cfft_instance = { ADC_FFT_SIZE,
 		                                      twiddleCoef_2048,
 										      armBitRevIndexTable2048,
 										      ARMBITREVINDEXTABLE2048_TABLE_LENGTH
 										    };
 
-
+*/
 
 #define FILTER_BASEFREQ_MIN       40000 // kHz
 #define FILTER_BASEFREQ_MAX      100000 // kHz
@@ -37,3 +38,4 @@ const arm_cfft_instance_f32 cfft_instance = { ADC_FFT_SIZE,
 #define FILTER_BASEFREQ_MAX_DAC       0 // dac value
 
 #endif /* CONFIG_H_ */
+

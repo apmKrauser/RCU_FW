@@ -281,6 +281,8 @@ void setVCOOffset(uint32_t offset)
 void startDAQ()
 {
 	IsBusy_ADC2 = IsBusy_ADC1 = true;
+	// Reset DAC Timer
+	__HAL_TIM_SetCounter(&htim6, 0);
 	// Enables ADC DMA
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Buffer, ADC_BUFFER_SIZE) != HAL_OK)
 		HALT("=> ADC_DMA startup failure");
