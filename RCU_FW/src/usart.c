@@ -39,7 +39,7 @@
 #include "dma.h"
 
 /* USER CODE BEGIN 0 */
-
+#define USART_SPEED 57600
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -53,7 +53,7 @@ void MX_USART1_UART_Init(void)
   huart1.Instance = USART1;
   //huart1.Init.BaudRate = 115200;
   // Todo: remove
-  huart1.Init.BaudRate = 57600;
+  huart1.Init.BaudRate = USART_SPEED;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
