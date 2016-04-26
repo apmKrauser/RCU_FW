@@ -81,9 +81,11 @@ int main(void)
 	SysInits();
 
 
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
 	printf("Entering world ... \r\n");
 
 	HAL_Delay(1000);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 
 	ret = setVCOFreq(500);  // check adc.prescaler !! check dma int led blick
 	setVCOOffset(128);    // check sConfig.SamplingTime
@@ -95,6 +97,11 @@ int main(void)
 	setFilterBaseFreq(0);
 	setFilterBandpass(Filter_HighPass_Bypass, Filter_LowPass_Div300);
 	printf("Hello world! \r\n");
+
+	HAL_Delay(1000);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
+
 
 
 	// --- main loop ---
@@ -131,7 +138,7 @@ void SysInits()
 	MX_RNG_Init();
 	MX_TIM1_Init();
 	MX_TIM6_Init();
-	MX_USART1_UART_Init();
+	MX_USART3_UART_Init();
 
 	// Startup DAC trigger timer
 	HAL_TIM_Base_Start(&htim6);
