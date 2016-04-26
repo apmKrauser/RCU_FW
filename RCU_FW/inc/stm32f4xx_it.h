@@ -50,6 +50,9 @@ void SysTick_Handler(void);
 void DMA1_Stream5_IRQHandler(void);
 void DMA2_Stream0_IRQHandler(void);
 void DMA2_Stream2_IRQHandler(void);
+void DMA2_Stream7_IRQHandler(void); //uart
+
+void USART1_IRQHandler(void); //uart
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
