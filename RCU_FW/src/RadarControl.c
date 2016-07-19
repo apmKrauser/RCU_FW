@@ -30,6 +30,7 @@ volatile uint16_t RxStreamBufferBytes = 0;
 
 uint16_t ADC1Buffer[ADC_BUFFER_SIZE] = {0};
 uint16_t ADC2Buffer[ADC_BUFFER_SIZE] = {0};
+float32_t FFTBuffer[2*ADC_FFT_SIZE] = {0.0};
 uint16_t ADC1BufferDelay = 0;
 uint16_t ADC2BufferDelay = 0;
 
@@ -91,6 +92,12 @@ void processCommand(Command_Struct cmd)
 			startDAQ();
 			awaitDAQComplete();
 			sendUARTOk(true);
+			break;
+		case CMD_ProcessData:
+			/// todo:  hjgjkgkjgh
+			runCFFT(ADC1Buffer, ADC1BufferDelay,
+					ADC2Buffer, ADC2BufferDelay, FFTBuffer);
+			runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
 			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;
