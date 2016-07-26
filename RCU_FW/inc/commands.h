@@ -22,6 +22,7 @@ typedef enum {
 	CMD_GetADC2Buffer   = 0x02,
 	CMD_GetAndSendADC1  = 0x03,
 	CMD_GetAndSendADC2  = 0x04,
+	CMD_GetFFTBuffer    = 0x05,
 	CMD_ConfigVCO		= 0x11,
 	CMD_ConfigFilter	= 0x12,
 	CMD_ConfigADCRate   = 0x13,

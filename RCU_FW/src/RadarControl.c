@@ -75,6 +75,9 @@ void processCommand(Command_Struct cmd)
 			awaitDAQComplete();
 			sendBufferUart((uint8_t*) &ADC2Buffer, ADC_BUFFER_SIZE*2);
 			break;
+		case CMD_GetFFTBuffer:
+			sendBufferUart((uint8_t*) &FFTBuffer, ADC_FFT_SIZE*4);
+			break;
 		case CMD_ConfigVCO:
 			freq = setVCOFreq(cmd.param1);
 			setVCOOffset(cmd.param2);
