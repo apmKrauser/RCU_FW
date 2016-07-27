@@ -20,7 +20,7 @@
 
 #define VERBOSE_DEBUG
 
-#define RX_STREAM_BUFFER_SIZE 4096
+#define RX_STREAM_BUFFER_SIZE 2*ADC_BUFFER_SIZE
 #define ADC_BUFFER_SIZE       4096
 #define ADC_FFT_SIZE          2048
 /*

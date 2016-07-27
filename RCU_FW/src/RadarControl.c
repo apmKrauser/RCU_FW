@@ -98,8 +98,8 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_ProcessData:
 			/// todo:  hjgjkgkjgh
-			runCFFT(ADC1Buffer, ADC1BufferDelay,
-					ADC2Buffer, ADC2BufferDelay, FFTBuffer);
+			//runCFFT(ADC1Buffer, ADC1BufferDelay,
+			//		ADC2Buffer, ADC2BufferDelay, FFTBuffer);
 			runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
 			break;
 		case CMD_StreamToBuffer:
@@ -354,6 +354,9 @@ void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
 			{
 				RxStreamBufferBytes = 0;
 				RxMode = RxMode_GetCommands;
+				// copy to ADC Buffer
+				memcpy(ADC1Buffer, RxStreamBuffer, ADC_BUFFER_SIZE);
+				memcpy(ADC2Buffer, RxStreamBuffer+ADC_BUFFER_SIZE, ADC_BUFFER_SIZE);
 				HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_RESET);
 			}
 			break;
