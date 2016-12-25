@@ -76,6 +76,7 @@ void processCommand(Command_Struct cmd)
 			sendBufferUart((uint8_t*) &ADC2Buffer, ADC_BUFFER_SIZE*2);
 			break;
 		case CMD_GetFFTBuffer:
+			// Todo: FLOAT Buffer VERschicekn !!!!! VORSICht !!!!!!!!!!!!!!!
 			sendBufferUart((uint8_t*) &FFTBuffer, ADC_FFT_SIZE*4);
 			break;
 		case CMD_ConfigVCO:
@@ -98,9 +99,9 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_ProcessData:
 			/// todo:  hjgjkgkjgh
-			//runCFFT(ADC1Buffer, ADC1BufferDelay,
-			//		ADC2Buffer, ADC2BufferDelay, FFTBuffer);
-			runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
+			runCFFT(ADC1Buffer, ADC1BufferDelay,
+					ADC2Buffer, ADC2BufferDelay, FFTBuffer);
+			//runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
 			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;
