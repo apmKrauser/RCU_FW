@@ -63,9 +63,14 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/Components/wm8994&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/STM32F4-Discovery&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/used_functions}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.541978849" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F407VGTx"/>
+									<listOptionValue builtIn="false" value="__FPU_PRESENT"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="STM32F4"/>
 									<listOptionValue builtIn="false" value="STM32F4DISCOVERY"/>
 									<listOptionValue builtIn="false" value="STM32"/>
@@ -115,6 +120,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/Components/wm8994&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/STM32F4-Discovery&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/used_functions}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1304863474" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.assembler.input.1902213485" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.input"/>
@@ -187,6 +194,15 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/Components/wm8994&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/STM32F4-Discovery&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/BasicMathFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/CommonTables}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/ComplexMathFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/ControllerFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/MatrixFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/StatisticsFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/SupportFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/TransformFunctions}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.942825426" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F407VGTx"/>
@@ -239,6 +255,15 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/Components/wm8994&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Utilities/STM32F4-Discovery&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/BasicMathFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/CommonTables}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/ComplexMathFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/ControllerFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/MatrixFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/StatisticsFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/SupportFunctions}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/DSP_Lib/Source/TransformFunctions}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.245874999" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.assembler.input.1654156360" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.input"/>
@@ -263,4 +288,12 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/stm32f4discovery_hal_lib"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/stm32f4discovery_hal_lib"/>
+		</configuration>
+	</storageModule>
 </cproject>

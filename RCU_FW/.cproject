@@ -61,6 +61,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities/STM32F4-Discovery}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/HAL_Driver/Src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1680008305" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F407VGTx"/>
@@ -81,11 +83,9 @@
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.1657461832" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
 								<option id="gnu.c.link.option.paths.251734085" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Debug}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Ac6\STM32Cube_FW_F4_V1.7.0\Drivers\CMSIS\Lib\ARM&quot;"/>
 								</option>
 								<option id="gnu.c.link.option.libs.1292526897" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="stm32f4discovery_hal_lib"/>
-									<listOptionValue builtIn="false" value=":arm_cortexM4lf_math.lib"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1424571983" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -130,6 +130,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities/STM32F4-Discovery}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/HAL_Driver/Src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1535201392" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.assembler.input.652492084" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.input"/>
@@ -213,6 +215,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities/STM32F4-Discovery}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/HAL_Driver/Src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1868652367" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F407VGTx"/>
@@ -279,6 +283,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/Utilities/STM32F4-Discovery}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/HAL_Driver/Src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f4discovery_hal_lib/CMSIS/Include}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.641100141" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.assembler.input.528475676" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.input"/>
