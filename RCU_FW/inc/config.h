@@ -22,6 +22,7 @@
 
 #define RX_STREAM_BUFFER_SIZE 2*ADC_BUFFER_SIZE
 #define ADC_BUFFER_SIZE       4096
+#define SIGNAL_BUFFER_SIZE    2*ADC_FFT_SIZE
 #define ADC_FFT_SIZE          2048
 /*
 const arm_cfft_instance_f32 cfft_instance = { ADC_FFT_SIZE,

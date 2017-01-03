@@ -132,6 +132,7 @@ void SysInits()
 	MX_DMA_Init();
 	MX_ADC1_Init(ADC_SAMPLETIME_56CYCLES);
 	MX_ADC2_Init(ADC_SAMPLETIME_56CYCLES);
+    // DAC 1: Modulation signal, DAC 2: filter IC (Base freq VCO).
 	MX_DAC_Init();
 	MX_I2C1_Init();
 	MX_I2C2_Init();
@@ -149,6 +150,8 @@ void SysInits()
 	// request byte from UART (needed for interrupt to occur)
 	startUARTRxIT();
 
+	// signal_processing.c
+	precalcHannWindow();
 }
 
 

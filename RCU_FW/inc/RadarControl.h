@@ -41,6 +41,7 @@ volatile uint8_t RxStreamBuffer[RX_STREAM_BUFFER_SIZE];
 volatile uint16_t RxStreamBufferBytes;
 extern uint16_t ADC1Buffer[ADC_BUFFER_SIZE];
 extern uint16_t ADC2Buffer[ADC_BUFFER_SIZE];
+extern uint16_t SignalBuffer[SIGNAL_BUFFER_SIZE];
 float32_t FFTBuffer[2*ADC_FFT_SIZE];
 extern uint16_t ADC1BufferDelay;
 extern uint16_t ADC2BufferDelay;

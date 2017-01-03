@@ -14,6 +14,7 @@
 #include "adc.h"
 #include "dac.h"
 #include "tim.h"
+#include "signal_processing.h"
 
 // variables
 #define UART_RXBUFFER_SIZE 100
@@ -30,6 +31,7 @@ volatile uint16_t RxStreamBufferBytes = 0;
 
 uint16_t ADC1Buffer[ADC_BUFFER_SIZE] = {0};
 uint16_t ADC2Buffer[ADC_BUFFER_SIZE] = {0};
+uint16_t SignalBuffer[SIGNAL_BUFFER_SIZE] = {0};
 float32_t FFTBuffer[2*ADC_FFT_SIZE] = {0.0};
 uint16_t ADC1BufferDelay = 0;
 uint16_t ADC2BufferDelay = 0;
@@ -77,6 +79,7 @@ void processCommand(Command_Struct cmd)
 			break;
 		case CMD_GetFFTBuffer:
 			// Todo: FLOAT Buffer VERschicekn !!!!! VORSICht !!!!!!!!!!!!!!!
+			// send 16 bit buffer implemented in CMD_ProcessData
 			sendBufferUart((uint8_t*) &FFTBuffer, ADC_FFT_SIZE*4);
 			break;
 		case CMD_ConfigVCO:
@@ -98,10 +101,14 @@ void processCommand(Command_Struct cmd)
 			sendUARTOk(true);
 			break;
 		case CMD_ProcessData:
-			/// todo:  hjgjkgkjgh
-			runCFFT(ADC1Buffer, ADC1BufferDelay,
-					ADC2Buffer, ADC2BufferDelay, FFTBuffer);
-			//runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
+			//runCFFT(ADC1Buffer, ADC1BufferDelay,
+			//		ADC2Buffer, ADC2BufferDelay, FFTBuffer);
+			startDAQ();
+			awaitDAQComplete();
+			runRFFT(ADC1Buffer, ADC1BufferDelay, FFTBuffer);
+			normalize16Bit(FFTBuffer, SignalBuffer);
+			// Todo: check SIGNAL_BUFFER_SIZE = ADC_BUFFER_SIZE
+			sendBufferUart((uint8_t*) &SignalBuffer, SIGNAL_BUFFER_SIZE*2);
 			break;
 		case CMD_StreamToBuffer:
 			RxMode = RxMode_RxStream;

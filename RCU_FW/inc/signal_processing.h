@@ -14,4 +14,7 @@ void runCFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay, uint16_t* inSignal
 
 void runRFFT (uint16_t* inSignalIF, uint16_t inSignalIFDelay, float32_t* outBuffer);
 
+// prepare FFT Signal for sending over UART
+void normalize16Bit (float32_t* inBuffer, uint16_t* outBuffer);
+
 #endif /* SIGNAL_PROCESSING_H_ */
