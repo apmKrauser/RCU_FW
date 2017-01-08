@@ -95,6 +95,10 @@ void normalize16Bit (float32_t* inBuffer, uint16_t* outBuffer)
 	// get highest value and index
 	float32_t maxValue;
 	uint32_t maxIndex;
+	for (int i = 0; i < ADC_FFT_SIZE; ++i) {
+		// warning: side effect on inBuffer
+		if (inBuffer[i] < 0) inBuffer[i] *= -1;
+	}
 	arm_max_f32(inBuffer, ADC_FFT_SIZE, &maxValue, &maxIndex);
 
 	// Normalize to 65000
