@@ -55,7 +55,6 @@ bool checkAndProcessCommand()
 void processCommand(Command_Struct cmd)
 {
     uint32_t freq;
-    HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_SET);
 	switch (cmd.command)
 	{
 		case CMD_NOOP:
@@ -115,11 +114,9 @@ void processCommand(Command_Struct cmd)
 			ADC1BufferDelay = 0;
 			ADC2BufferDelay = 0;
 			sendUARTOk(true);
-			HAL_GPIO_WritePin(GPIOD_BASE, (1<<12), GPIO_PIN_SET);
 			break;
 	}
 	CurrentCommand = CommandNOOP;
-	HAL_GPIO_WritePin(GPIOD_BASE, (1<<13), GPIO_PIN_RESET);
 }
 
 
@@ -140,19 +137,19 @@ void awaitDAQComplete()
 void sendBufferUart(uint8_t *pData, uint16_t Size)
 {
 	IsBusy_UART_DMA = true;
-	HAL_UART_Transmit_DMA(&huart3, pData, Size);
+	HAL_UART_Transmit_DMA(&huart1, pData, Size);
 //	HAL_UART_DMAResume(&huart1);
 }
 
 void sendUARTUInt32(uint32_t val)
 {
-	HAL_UART_Transmit(&huart3, (uint8_t*)&val, 4, 1000);
+	HAL_UART_Transmit(&huart1, (uint8_t*)&val, 4, 1000);
 }
 
 void sendUARTOk(bool ok)
 {
 	uint8_t msgRet = ok ? 0x00 : 0xFF;
-	HAL_UART_Transmit(&huart3, (uint8_t*)&msgRet, 1, 1000);
+	HAL_UART_Transmit(&huart1, (uint8_t*)&msgRet, 1, 1000);
 
 }
 
@@ -322,7 +319,7 @@ void startDAQ()
 void startUARTRxIT()
 {
 	// request byte from UART (needed for interrupt to occur)
-	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+	HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
 }
 
 
@@ -370,7 +367,7 @@ void HAL_UART_RxByte_IRQHandler(UART_HandleTypeDef *huart)
 			break;
 	}
 	// receive next byte
-	HAL_UART_Receive_IT(&huart3,(uint8_t*) &uart_rx_byte, 1);
+	HAL_UART_Receive_IT(&huart1,(uint8_t*) &uart_rx_byte, 1);
 }
 
 void HALT(const char* str)
